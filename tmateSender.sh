@@ -15,14 +15,14 @@ SLEEP_INTERVAL=30 # 30 seconds
 SITE=google.com   # SITE to check against
 
 # Telegram Credentials
-TOKEN=
-CHAT_ID=
+TOKEN= # bot token
+CHAT_ID= # your telegram chat id
 URL="https://api.telegram.org/bot$TOKEN/sendMessage"
 
 # Interface
 INTF=''
 
-BOOT_MESSAGE="gmou-pc is Powered on and Online."
+BOOT_MESSAGE="Greeting" # Greeting Message
 POWERED_ON=1
 
 
@@ -37,7 +37,7 @@ func sendMessage ( ) {
 		
 	#extract the session id
 	SESSION_ID=$(tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}')
-	LOCAL_IPV4=$(ifdata -pa eth0)
+	LOCAL_IPV4=$(ip address show eth0 | grep "inet\b" | sed "s/^ *//" | cut -d ' ' -f 2)
 
 	# compose the message
 	MESSAGE="\[ $TIME \]
@@ -52,7 +52,7 @@ func sendMessage ( ) {
 while [ true ]
 do # infintely run the script
 
-	if ! nc -zw1 google.com 443 ; then # checking if connection is down
+	if ! ping -c 1 "$SITE" ; then # checking if connection is down
 		DOWN_TIME=$(( $(date +"%s") - $LAST_SEEN ))
 	else
 
