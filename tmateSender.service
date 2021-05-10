@@ -1,0 +1,10 @@
+[Unit]
+Description=Send tmate session id over telegram
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/local/tmateSender.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
